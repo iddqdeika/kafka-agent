@@ -1,0 +1,16 @@
+{
+  "KAFKA": {
+    "ASYNC": 0,
+    "BATCH_SIZE": 10,
+    "BROKERS": "kafka-01-croc.test.lan:9092",
+    "CONTROLLER_ADDRESS": "kafka-01-croc.test.lan:9092",
+    "CONCURRENCY": 1,
+    "CONSUMER_GROUP": "pim",
+    "DEFAULT_TOPIC_CONFIG": {
+      "NUM_PARTITIONS": 1,
+      "REPLICATION_FACTOR": 1
+    },
+    "QUEUES_TO_READ": "",
+    "QUEUES_TO_WRITE": ""
+  }
+}
