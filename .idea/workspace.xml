@@ -79,10 +79,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="178" key="#Go_Modules_(vgo)/0.0.1920.1040@0.0.1920.1040" timestamp="1599481794759" />
-    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1599656978909">
+    <state x="585" y="115" key="CommitChangelistDialog2" timestamp="1599657001860">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="115" key="CommitChangelistDialog2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1599656978909" />
+    <state x="585" y="115" key="CommitChangelistDialog2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1599657001860" />
     <state x="585" y="115" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599486821834" />
     <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1599486881660">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -100,9 +100,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="348" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599486881660" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599486824993">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1599657019842">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1599657019842" />
     <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599486824993" />
   </component>
 </project>
