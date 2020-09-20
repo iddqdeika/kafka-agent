@@ -6,29 +6,39 @@ import (
 	"io/ioutil"
 	"kafka-agent/nethelper"
 	"net/http"
+	"sync"
 )
 
-func New() (*Agent, error){
-	config, err := kafkaadapt.LoadJsonConfig("cfg.json")
-	if err != nil{
+const (
+	cfgFileName = "cfg.json"
+)
+
+func New() (*Agent, error) {
+	config, err := kafkaadapt.LoadJsonConfig(cfgFileName)
+	if err != nil {
 		return nil, err
 	}
 	q, err := kafkaadapt.FromConfig(config, kafkaadapt.DefaultLogger)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
-	return &Agent{q:q}, nil
-}
 
+	return &Agent{
+		q:          q,
+		writersGot: make(map[string]struct{}),
+	}, nil
+}
 
 type Agent struct {
-	q	*kafkaadapt.Queue
-
+	q          *kafkaadapt.Queue
+	port       int
+	writersGot map[string]struct{}
+	m          sync.RWMutex
 }
 
-func (a *Agent) Run() error{
+func (a *Agent) Run() error {
 	addr, err := nethelper.GetCurrentAddr(8091)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	http.HandleFunc("/sendMsgToKafka", a.SendMsgToKafka)
@@ -36,22 +46,31 @@ func (a *Agent) Run() error{
 	return http.ListenAndServe(addr, nil)
 }
 
-func (a *Agent) SendMsgToKafka(w http.ResponseWriter, r *http.Request){
+func (a *Agent) SendMsgToKafka(w http.ResponseWriter, r *http.Request) {
 	data, err := ioutil.ReadAll(r.Body)
-	if err != nil{
+	if err != nil {
 		w.Write([]byte("cant read request body"))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	queues, ok := r.URL.Query()["queue"]
-	if !ok || len(queues)<1{
+	if !ok || len(queues) < 1 {
 		w.Write([]byte("queue param must be filled in url"))
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 	queue := queues[0]
-	a.q.WriterRegister(queue)
+
+	a.m.Lock()
+	_, ok = a.writersGot[queue]
+	if !ok {
+		a.q.WriterRegister(queue)
+		a.writersGot[queue] = struct{}{}
+	}
+	a.m.Unlock()
+
 	err = a.q.Put(queue, data)
-	if err != nil{
+	if err != nil {
 		w.Write([]byte("kafka adapter err: " + err.Error()))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
