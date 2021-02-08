@@ -42,11 +42,13 @@ func (a *Agent) Run() error {
 		return err
 	}
 	http.HandleFunc("/sendMsgToKafka", a.SendMsgToKafka)
+	http.HandleFunc("/echo", echo)
 	fmt.Println("kafka agent started on " + addr)
 	return http.ListenAndServe(addr, nil)
 }
 
 func (a *Agent) SendMsgToKafka(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.Write([]byte("cant read request body"))
@@ -76,5 +78,13 @@ func (a *Agent) SendMsgToKafka(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Write([]byte("ok"))
+	return
+}
+
+func echo(rw http.ResponseWriter, req *http.Request) {
+	msgs := req.URL.Query()["msg"]
+	if len(msgs) >= 1 {
+		rw.Write([]byte(msgs[0]))
+	}
 	return
 }
